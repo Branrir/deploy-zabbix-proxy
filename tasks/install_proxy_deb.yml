@@ -1,0 +1,88 @@
+# Check if repository installed
+
+- name: check if already installed (debian)
+  command: dpkg-query -W zabbix-release
+  register: zabbix_release_check_deb
+  failed_when: zabbix_release_check_deb.rc > 1
+  changed_when: zabbix_release_check_deb.rc == 1
+  when: ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
+
+
+- name: Download zabbix-release(Debian 10)
+  get_url:
+    url="{{ repo_deb_10 }}"
+    dest='/home/{{ ansible_env.USER }}/zabbix-release.deb'
+  when:
+    - zabbix_release_check_deb.rc == 1
+    - ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version'] == '10'
+
+- name: Download zabbix-release(Debian 9) 
+  get_url:
+    url="{{ repo_deb_9 }}"
+    dest='/home/{{ ansible_env.USER }}/zabbix-release.deb'
+  when:
+    - zabbix_release_check_deb.rc == 1
+    - ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version'] == '9'
+
+
+- name: Download zabbix-release(Debian 8) 
+  get_url:
+    url="{{ repo_deb_8 }}"
+    dest='/home/{{ ansible_env.USER }}/zabbix-release.deb'
+  when:
+    - zabbix_release_check_deb.rc == 1
+    - ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version'] == '8'
+
+- name: Download zabbix-release(Debian 7)
+  get_url:
+    url="{{ repo_deb_7 }}"
+    dest='/home/{{ ansible_env.USER }}/zabbix-release.deb'
+  when:
+    - zabbix_release_check_deb.rc == 1
+    - ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version'] == '7'
+    
+
+- name: Download zabbix-release(Ubuntu 18.xx) 
+  get_url:
+    url="{{ repo_ubuntu_18 }}"
+    dest='/home/{{ ansible_env.USER }}/zabbix-release.deb'
+  when:
+    - zabbix_release_check_deb.rc == 1
+    - ansible_facts['distribution'] == 'Ubuntu' and {{ ansible_distribution_version }} >= 18
+
+
+- name: Download zabbix-release(Ubuntu 16.xx)
+  get_url:
+    url="{{ repo_ubuntu_16 }}"
+    dest='/home/{{ ansible_env.USER }}/zabbix-release.deb'
+  when:
+    - zabbix_release_check_deb.rc == 1
+    - ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= 16
+
+- name: Download zabbix-release(Ubuntu 14.xx)
+  get_url:
+    url="{{ repo_ubuntu_14 }}"
+    dest='/home/{{ ansible_env.USER }}/zabbix-release.deb'
+  when:
+    - zabbix_release_check_deb.rc == 1
+    - ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= 14
+
+
+- name: Install zabbix-release
+  become: yes
+  apt:
+    deb='/home/{{ ansible_env.USER }}/zabbix-release.deb'
+  when:
+    - zabbix_release_check_deb.rc == 1
+    - ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
+
+
+
+- name: Install proxy components
+  become: yes
+  apt:
+    name: 
+      - zabbix-proxy-sqlite3
+    state: present
+    enabled: yes
+    update_cache: yes
