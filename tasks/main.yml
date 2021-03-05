@@ -5,7 +5,7 @@
 
 #install zabbix repo and proxy
 - name: Install Zabbix repository and proxy
-  import_tasks: install_proxy_deb.yml
+  import_tasks: install_zabbix_proxy_deb.yml
   when: ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
 
 
@@ -13,3 +13,16 @@
 - name: install CA on Debian system
   import_tasks: install_ca_deb.yml
   when: ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
+
+# Create DB and deploy configuration
+- name: create DB and deploy configuration
+  import_tasks: configure_zabbix_proxy.yml
+
+
+# Restart Zabbix proxy
+- name:
+  service:
+    name: zabbix-proxy
+    state: restarted
+    enabled: yes
+  become: yes

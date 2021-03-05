@@ -5,7 +5,6 @@
     name: 
       - ca-certificates
     state: present
-    enabled: yes
     update_cache: yes
 
 # Copy CA certificate
@@ -13,14 +12,11 @@
   become: yes
   copy:
     src: '/home/aso/kunden/inmedias/zabbix/ssl/ca/zabbix_ca.pem'
-    desc: /usr/local/share/ca-certificates/zabbix_ca.crt
+    dest: /usr/local/share/ca-certificates/zabbix_ca.crt
     owner: root
     group: root
     mode: 0644
-  notify:
-    - update trusted ca debian
 
-handlers:
 - name: update trusted ca debian
   shell: /usr/sbin/update-ca-certificates
   become: yes

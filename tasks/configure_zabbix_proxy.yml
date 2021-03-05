@@ -1,0 +1,62 @@
+# Copy configuration file
+- name: Copy configuration file
+  template:
+    src: zabbix_proxy.j2
+    dest: /etc/zabbix/zabbix_proxy.conf
+    owner: zabbix
+    group: zabbix
+    mode: 0664
+  become: yes
+
+- name: Copy CA certificate
+  become: yes
+  copy:
+    src: '/home/aso/kunden/inmedias/zabbix/ssl/ca/zabbix_ca.pem'
+    dest: '/etc/zabbix/zabbix_ca.pem'
+    owner: zabbix
+    group: zabbix
+    mode: 0644
+  become: yes
+
+- name: Copy proxy certificate
+  become: yes
+  copy:
+    src: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.crt'
+    dest: '/etc/zabbix/{{ hostname }}.pem'
+    owner: zabbix
+    group: zabbix
+    mode: 0644
+  become: yes
+
+- name: Copy proxy key
+  become: yes
+  copy:
+    src: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.key'
+    dest: '/etc/zabbix/{{ hostname }}.key'
+    owner: zabbix
+    group: zabbix
+    mode: 0644
+  become: yes
+
+
+# Check if db exists
+- name: check if db file exists
+  stat: 
+    path: /etc/zabbix/zabbix_proxy.db
+  register: zabbix_db
+
+
+
+- name: populate sqlite DB
+  shell: zcat /usr/share/doc/zabbix-proxy-sqlite3/schema.sql.gz | sqlite3 zabbix_proxy.db
+  args:
+    chdir: /etc/zabbix/
+  become: yes
+  when: zabbix_db.stat.exists == false
+
+- name: change owner of db to zabbix
+  file:
+    name: /etc/zabbix/
+    owner: zabbix
+    group: zabbix
+  become: yes
