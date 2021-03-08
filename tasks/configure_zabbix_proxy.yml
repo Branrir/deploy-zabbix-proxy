@@ -11,7 +11,7 @@
 - name: Copy CA certificate
   become: yes
   copy:
-    src: '/home/aso/kunden/inmedias/zabbix/ssl/ca/zabbix_ca.pem'
+    src: '{{ cert_path }}/ca/zabbix_ca.pem'
     dest: '/etc/zabbix/zabbix_ca.pem'
     owner: zabbix
     group: zabbix
@@ -21,7 +21,7 @@
 - name: Copy proxy certificate
   become: yes
   copy:
-    src: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.crt'
+    src: '{{ cert_path }}/cert/{{ hostname }}.crt'
     dest: '/etc/zabbix/{{ hostname }}.pem'
     owner: zabbix
     group: zabbix
@@ -31,7 +31,7 @@
 - name: Copy proxy key
   become: yes
   copy:
-    src: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.key'
+    src: '{{ cert_path }}/cert/{{ hostname }}.key'
     dest: '/etc/zabbix/{{ hostname }}.key'
     owner: zabbix
     group: zabbix

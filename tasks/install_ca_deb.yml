@@ -11,7 +11,7 @@
 - name: Copy CA certificate
   become: yes
   copy:
-    src: '/home/aso/kunden/inmedias/zabbix/ssl/ca/zabbix_ca.pem'
+    src: '{{ cert_path }}/ca/zabbix_ca.pem'
     dest: /usr/local/share/ca-certificates/zabbix_ca.crt
     owner: root
     group: root

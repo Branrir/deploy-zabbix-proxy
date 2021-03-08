@@ -2,14 +2,14 @@
   connection: local
   delegate_to: localhost
   openssl_privatekey:
-    path: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.key'
+    path: '{{ cert_path }}/cert/{{ hostname }}.key'
 
 - name: Generate CSR
   connection: local
   delegate_to: localhost
   openssl_csr:
-    path: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.csr'
-    privatekey_path: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.key'
+    path: '{{ cert_path }}/cert/{{ hostname }}.csr'
+    privatekey_path: '{{ cert_path }}/cert/{{ hostname }}.key'
     country_name: DE
     organization_name: 'inmedias.it GmbH'
     common_name: "{{hostname}}"
@@ -18,9 +18,9 @@
   connection: local
   delegate_to: localhost
   openssl_certificate:
-    path: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.crt'
-    csr_path: '/home/aso/kunden/inmedias/zabbix/ssl/cert/{{ hostname }}.csr'
-    ownca_path: '/home/aso/kunden/inmedias/zabbix/ssl/ca/zabbix_ca.pem'
-    ownca_privatekey_path: '/home/aso/kunden/inmedias/zabbix/ssl/ca/zabbix_ca.key'
+    path: '{{ cert_path }}/cert/{{ hostname }}.crt'
+    csr_path: '{{ cert_path }}/cert/{{ hostname }}.csr'
+    ownca_path: '{{ cert_path }}/ca/zabbix_ca.pem'
+    ownca_privatekey_path: '{{ cert_path }}/ca/zabbix_ca.key'
     provider: ownca
 
