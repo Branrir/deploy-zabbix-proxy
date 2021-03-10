@@ -59,4 +59,5 @@
     name: /etc/zabbix/
     owner: zabbix
     group: zabbix
+    recurse: yes
   become: yes
