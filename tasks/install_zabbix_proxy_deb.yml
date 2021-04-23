@@ -33,14 +33,15 @@
     - zabbix_release_check_deb.rc == 1
     - ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version'] == '8'
 
-- name: Download zabbix-release(Debian 7)
+- name: Download zabbix-release(Ubuntu 20.xx) 
   get_url:
-    url="{{ repo_deb_7 }}"
+    url="{{ repo_ubuntu_20 }}"
     dest='/tmp/zabbix-release.deb'
   when:
     - zabbix_release_check_deb.rc == 1
-    - ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version'] == '7'
-    
+    - ansible_facts['distribution'] == 'Ubuntu' and {{ ansible_distribution_version }} == 20
+
+
 
 - name: Download zabbix-release(Ubuntu 18.xx) 
   get_url:
@@ -48,7 +49,7 @@
     dest='/tmp/zabbix-release.deb'
   when:
     - zabbix_release_check_deb.rc == 1
-    - ansible_facts['distribution'] == 'Ubuntu' and {{ ansible_distribution_version }} >= 18
+    - ansible_facts['distribution'] == 'Ubuntu' and {{ ansible_distribution_version }} == 18
 
 
 - name: Download zabbix-release(Ubuntu 16.xx)
@@ -57,7 +58,7 @@
     dest='/tmp/zabbix-release.deb'
   when:
     - zabbix_release_check_deb.rc == 1
-    - ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= 16
+    - ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version == 16
 
 - name: Download zabbix-release(Ubuntu 14.xx)
   get_url:
@@ -65,7 +66,7 @@
     dest='/tmp/zabbix-release.deb'
   when:
     - zabbix_release_check_deb.rc == 1
-    - ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= 14
+    - ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version == 14
 
 
 - name: Install zabbix-release

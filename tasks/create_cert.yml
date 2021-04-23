@@ -11,7 +11,7 @@
     path: '{{ cert_path }}/cert/{{ hostname }}.csr'
     privatekey_path: '{{ cert_path }}/cert/{{ hostname }}.key'
     country_name: DE
-    organization_name: 'inmedias.it GmbH'
+    organization_name: '{{organization}}'
     common_name: "{{hostname}}"
 
 - name: Sign CSR
