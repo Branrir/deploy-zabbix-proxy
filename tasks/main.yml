@@ -2,21 +2,27 @@
 # Create certificate
 - name: Create certificate
   import_tasks: create_cert.yml
+  when: init_proxy==true
 
 #install zabbix repo and proxy
 - name: Install Zabbix repository and proxy
   import_tasks: install_zabbix_proxy_deb.yml
-  when: ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
+  when: (ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu') and init_proxy == true
 
 
 # Deploy CA on target Host
 - name: install CA on Debian system
   import_tasks: install_ca_deb.yml
-  when: ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
+  when: (ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu') and init_proxy == true
 
 # Create DB and deploy configuration
 - name: create DB and deploy configuration
   import_tasks: configure_zabbix_proxy.yml
+  when: init_proxy == true
+
+# Install scripts
+- name: install checks/scripts
+  import_tasks: install_scripts.yml
 
 
 # Restart Zabbix proxy

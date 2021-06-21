@@ -1,0 +1,28 @@
+- name: "Checking folders"
+  stat:
+    path: "{{item}}"
+  register: folder_stats
+  with_items: "{{folders_proxy}}"
+  become: yes
+
+- name: "Create folder if not exist"
+  file:
+    path: "{{item.item}}"
+    state: directory
+    mode: 0755
+    group: zabbix
+    owner: zabbix
+  when: item.stat.exists == false
+  with_items:
+  - "{{folder_stats.results}}"
+  become: yes
+
+
+- name: sync scripts
+  copy:
+    src: "{{ item.src }}"
+    dest: /usr/lib/zabbix/externalscripts
+  with_filetree: ./files/scripts
+  become: yes
+  when: 
+    - item.state == 'file'
