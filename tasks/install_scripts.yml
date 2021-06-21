@@ -21,7 +21,7 @@
 - name: sync scripts
   copy:
     src: "{{ item.src }}"
-    dest: /usr/lib/zabbix/externalscripts
+    dest: /usr/share/lib/zabbix/externalscripts
   with_filetree: ./files/scripts
   become: yes
   when: 
