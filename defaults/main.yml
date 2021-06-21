@@ -10,4 +10,4 @@ repo_ubuntu_14: 'https://repo.zabbix.com/zabbix/5.2/ubuntu/pool/main/z/zabbix-re
 init_proxy: false
 
 folders_proxy:
-  - /usr/share/lib/zabbix/externalscripts
+  - /usr/share/zabbix/externalscripts
