@@ -22,6 +22,9 @@
   copy:
     src: "{{ item.src }}"
     dest: /usr/share/zabbix/externalscripts
+    owner: root
+    group: root
+    mode: a+x
   with_filetree: ./files/scripts
   become: yes
   when: 
